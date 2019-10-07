@@ -1,0 +1,32 @@
+#header {  
+    border-bottom: 1px dotted grey;   /* space around header */
+    padding: 40px 0 20px;               /* dotted line under header */
+}
+
+#securepw {
+    border: 2px dashed grey;     /* dashed box around "your secure pw" */
+    height: 150px;                 /* size of box */
+    padding-top: 15px;             /* space above text */
+    text-align: center;           
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: grey;
+}
+
+/* #generate {
+    float: left;
+}
+
+#clipboard {
+    float: right;
+}
+*/
+
+.rounded {
+    border-radius: 36px!important;
+}
+
+#buttons-top-border {
+    border-top: 1px dotted grey;
+    padding-top: 20px;
+}

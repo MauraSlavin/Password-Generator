@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+
+<!-- google fonts -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title>Password Generator</title> <!-- appears in tab -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- bootstrap elements -->
+    <link rel="stylesheet" type="text/css" href="style.css"> <!-- link my stylesheet -->
+</head>
+
+
+<style>
+
+
+
+
+</style>
+
+<body>
+    <div class="container">
+
+        <!-- row with "Generate a PW" (& bottom dotted border) -->
+        <div class="row">
+            <div class="col-12">
+                <h1 id="header">Generate a Password</h1>
+            </div>
+        </div>
+
+        <!-- row with "Your secure pw" (surrounded by dotted border) -->
+        <div class="row">
+            <div class="col-12">
+                <p id="securepw">Your Secure Password</p>
+            </div>
+        </div>
+
+        <!-- buttons "Generate pw" and "Copy to clipboard" on same row -->
+        <div class="row" id="buttons-top-border">
+
+            <!-- Generate button -->
+            <div class="col-6 text-left">
+                <div id="generate">
+                    <button type="button" class="btn btn-default btn-lg btn-dark rounded">
+                        <span class="">Generate Password</span>
+                    </button>
+                </div>
+            </div> <!-- end of "Generate" button div -->
+
+            <!-- Copy button -->
+            <div class="col-6 text-right">
+                <div id="clipboard">
+                    <button type="button" class="btn btn-default btn-lg btn-secondary rounded">
+                        <span class="">Copy to Clipboard</span>
+                    </button>
+                </div>
+            </div>  <!-- end of "Copy" button div -->
+
+        </div> <!-- end of row with buttons -->
+
+</body>
+
+</html>
