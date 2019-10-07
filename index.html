@@ -21,6 +21,7 @@
 
 </style>
 
+
 <body>
     <div class="container">
 
@@ -57,10 +58,54 @@
                         <span class="">Copy to Clipboard</span>
                     </button>
                 </div>
-            </div>  <!-- end of "Copy" button div -->
+            </div> <!-- end of "Copy" button div -->
 
         </div> <!-- end of row with buttons -->
 
 </body>
+
+
+<script type="text/Javascript">
+
+    function getLength() {
+        var length = 0;  /* defines length and ensures while loop runs at least once */
+        while (length < 8 || length > 128) {    /* will continue to ask if length is not a valid number */
+        
+            length = prompt("How many characters would you like in your password?\nPlease enter a number between 8 and 128.");
+
+        /* re-prompt if user entered something that is not a number */
+            if (isNaN(length)) {    
+                alert('You must enter a number.\nYou entered "' + length + '".');
+                length = 0;  /* to continue while loop */
+            }
+
+        /* re-prompt if user entered a number less than 8 */
+            else if (length < 8) {
+                alert("You must enter a number greater than 8.\nYou entered " + length + ".");
+            }
+
+        /* re-prompt if user entered a number greater than 128 */
+            else if (length > 128) {
+                alert("You must enter a number less than 128.\nYou entered " + length + ".");
+            }
+        }  /* end of while loop */
+
+    /* we have a valid entry for the length of the password! */
+    return length = parseInt(length);  /* make length a number datatype  and returns it */
+    }
+
+    var pwLength = getLength();  /* ask & verify length of password desired */
+    var requireSpecCharacter = confirm("Would you like at least one special character?");
+    var requireNumber = confirm("Would you like at least one number?");
+    var requireUpperCase = confirm("Would you like at least one uppercase letter?");
+    var requireLowerCase = confirm("Would you like at least one lowercase letter?");
+    if (!(requireSpecCharacter && requireNumber && requireLowerCase && requireUpperCase)) {
+        prompt("You must choose at least one of the following:\n1: A special character\n2: A number\n3: An uppercase letter, or\n4: a lowercase letter.\nPlease enter the corresponding number.");
+ /* check input - must be 1, 2, 3 or 4.  If not, re-prompt */       
+    };
+
+    
+</script>
+
 
 </html>
