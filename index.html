@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- bootstrap elements -->
     <link rel="stylesheet" type="text/css" href="style.css"> <!-- link my stylesheet -->
+    <!-- include jquery for writing to the clipboard -->
+    <!-- <script src="jquery-3.4.1.min.js"></script> -->
 </head>
 
 
@@ -54,7 +56,7 @@
             <!-- Copy button -->
             <div class="col-6 text-right">
                 <div id="clipboard">
-                    <button type="button" class="btn btn-default btn-lg btn-secondary rounded">
+                    <button type="button" class="btn btn-default btn-lg btn-secondary rounded" onclick="copyToClipboard()">
                         <span class="">Copy to Clipboard</span>
                     </button>
                 </div>
@@ -283,6 +285,37 @@ function getPW() {
     securepw.style.color = "blue";
     securepw.style.weight = "700";
 }
+
+function copyToClipboard() {
+/* for testing */ password = "new-password";
+
+    // Overwrite what is being copied to the clipboard.
+
+    // need textarea for system to allow you to write to the system clipboard. 
+                var textarea = document.createElement("textarea");
+                textarea.textContent = password;
+      
+                textarea.style.position = "fixed";
+                document.body.appendChild(textarea);
+                textarea.select();
+               try {
+                   return document.execCommand("cut");
+                } 
+                catch (ex) {
+                    console.warn("Copy to clipboard failed.", ex);
+                    return false;
+                } 
+                finally {
+                    document.body.removeChild(textarea);
+                }
+};
+
+
+
+  // This is necessary to prevent the current document selection from
+  // being written to the clipboard.
+  // window.preventDefault();
+
 
 </script>
 
