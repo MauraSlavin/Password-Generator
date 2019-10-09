@@ -45,7 +45,7 @@
             <!-- Generate button -->
             <div class="col-6 text-left">
                 <div id="generate">
-                    <button type="button" class="btn btn-default btn-lg btn-dark rounded">
+                    <button type="button" class="btn btn-default btn-lg btn-dark rounded" onclick="getPW()">
                         <span class="">Generate Password</span>
                     </button>
                 </div>
@@ -97,6 +97,7 @@
 
 function getRequirements() {
     var choice = null;
+    alert("requiredBooleans (getRequirements): " + requiredBooleans);
 
      
     for (var i = 0; i < 4; i++) {
@@ -162,7 +163,10 @@ function getNumberOfEachType() {
 
 
 function generateIndices() {
+    var indicies = [];   /* simple array of indicies into PW for current char type. */
 
+
+    return indicies;
 }
 
 
@@ -223,6 +227,10 @@ console.log(" ");
 
 
 
+/* only do anything if a button is clicked. */
+/* declare & initialize global variables */
+
+/* possible characters to choose from, by character type. Order: Special, number, Uppercase, lowercase */
     var possibleCharacters = [
         ["!", "#", "$", "%", "&", "(", ")", "*", "+", "-", "/", ":", ";", "<", "=", ">", "?", "@", "^", "_", "`", "{", "|", "}", "~"], /* spec chars */
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], /* numbers */
@@ -230,40 +238,51 @@ console.log(" ");
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] /* lowercase */
        ] 
 
-    var pwLength = getLength();  /* ask & verify length of password desired */
+/* variables needed to ask the user what requirements they want */
+/* length of password  */
+    var pwLength = 0;  
+/* assume none of the character types are required to begin with. */
     var requiredBooleans = [false, false, false, false]; /* SpecChar, #s, UpperCase, LowerCase */
+    alert("requiredBooleans (init): " + requiredBooleans);
+/* verbiage for each character type, in order */
     var requireQuestions = ["special character", "number", "uppercase letter", "lowercase letter"];
     
-    getRequirements();
-
+/* number of each character type to include in password.  Will be 0 if not wanted.  Sum of elements should = pwLength */
     var numEachCharType = [0, 0, 0, 0];
+/* indicies into password for each of the character types.  Total number of indicies should = pwLength */
     var indiciesForEachCharType = [ [], [], [], []];
 
-    getNumberOfEachType();
+/* initialize password to be generated */
+    var password = null;
+/* pwCharLeft keeps track of how many characters are left to work with */
+    var pwCharLeft = pwLength;
 
+function getPW() {
+    pwLength = getLength();     /* ask & verify length of password desired */
+    getRequirements();          /* ask user which requirements they want, validate input, reprompt if needed */
+    getNumberOfEachType();      /* randomly determine how many of each REQUESTED char type will be generated (0 if not requested as a placeholder) */
+
+/* for testing - how many of each char type will be generated */
     for (var i = 0; i < 4; i++) {
         console.log(requireQuestions[i] + ": " + numEachCharType[i]);
     }
-
-    var password = null;
-    var pwCharLeft = pwLength;
     alert("Length: " + pwLength + "\nSpec Char: " + numEachCharType[0] + "\nnumbers: " + numEachCharType[1] + "\nUC: " + numEachCharType[2] + "\nlc: " + numEachCharType[3]);
 
+/* generate the indicies into password for each char type.  */
     for (var i = 0; i < 4; i++) {
-        generateIndices();
+        indiciesForEachCharType[i] =  generateIndices();
     }
 
     /* password = assignPW(); */
     alert("Complete Password: " + password);
 
-/* ******  for testing purposes  ****** */
-password = "your new pw";
+
     /* put pw on website */
     securepw.textContent = password;
     /* change formatting */
     securepw.style.color = "blue";
     securepw.style.weight = "700";
-
+}
 
 </script>
 
