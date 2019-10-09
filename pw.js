@@ -3,10 +3,10 @@
 
 /* possible characters to choose from, by character type. Order: Special, number, Uppercase, lowercase */
 var possibleCharacters = [
-    ["!#$%&()*+-/:;<=>?@^_`{|}~"], /* spec chars */
-    ["0123456789"], /* numbers */
-    ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"], /* uppercase */
-    ["abcdefghijklmnopqrstuvwxyz"] /* lowercase */
+    ["!", "#", "$", "%", "&", "(", ")", "*", "+", "-", "/", ":", ";", "<", "=", ">", "?", "@", "^", "_", "`", "{", "|", "}", "~"], /* spec chars */
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], /* numbers */
+    ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"], /* uppercase */
+    ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] /* lowercase */
    ] 
 
 /* number of character types (for looping through each ). */
@@ -53,10 +53,9 @@ function getPW() {
         }
     }   
 
+    alert("(test) indicies generated:  " + indiciesForEachCharType);
+
     password = assignPW();
-    alert(password);
-    password.join();
-    alert(password);
 
 /* put pw on website */
     securepw.textContent = password;
@@ -145,7 +144,6 @@ function getNumberOfEachType() {
         numTypes = numTypes + requiredBooleans[i];
     }
 
-
 /* Generate the number of each character type */
     for (var i = 0; i < numCharTypes; i++) {  
 
@@ -161,7 +159,6 @@ function getNumberOfEachType() {
                 lengthLeft = lengthLeft - numEachCharType[i];  /* lengthLeft is the number of characters of other types remaining */
             }  /* of else */
         }  /* of if requireSpecCharacter */
-
     } /* of for loop */
 
 }  /* of getNumberOfEachType function */
@@ -176,6 +173,7 @@ function generateIndices(numIndiciesNeeded, charType) {
 
     for (var i = 0; i < possibleCharacters[charType].length; i++) {
         allIndicies.push(i);
+        // alert(i + " (i):  allIndicies:  " + allIndicies);
     }
 
     allIndicies = shuffle(allIndicies);
@@ -212,22 +210,20 @@ return array;
 
 function assignPW() {
     var pw = [];
-    for (var i = 0; i < pwLength; i++) {
-        pw.push([]);
+
+    /* get characters to be used, by character type */
+    for (var i = 0; i < numCharTypes; i++) {
+        for (var j = 0; j < indiciesForEachCharType[i].length; j++) {
+            pw.push(possibleCharacters[i][j]);
+        }
     }  /* of assignPW fcn */
 
-    var charIndex = 0;
-    var pwIndex = 0;
-    var char = null;
+    pw = shuffle(pw);
+    alert(pw);
 
-    for (var i = 0; i < numCharTypes; i++) {   /* 0 to 3 - for each character type */
-        for (var j = 0; j < indiciesForEachCharType[i].length; j++) {
-            charIndex = Math.floor(Math.random() * (possibleCharacters[i].length + 1));
-            char = possibleCharacters[i][charIndex];
-            pwIndex = indiciesForEachCharType[i][j];
-            pw[pwIndex] = char;
-        } /* of for j (for each index for that char type) */
-    }  /* of for i loop (for each char type) */
+    /* make into a string */
+    pw = pw.join('');
+    alert(pw);
 
     return pw;
 }   /* of assignPW function */
