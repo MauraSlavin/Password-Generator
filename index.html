@@ -97,12 +97,13 @@
 
 function getRequirements() {
     var choice = null;
-    requireSpecCharacter = confirm("Would you like at least one special character?");
-    requireNumber = confirm("Would you like at least one number?");
-    requireUpperCase = confirm("Would you like at least one uppercase letter?");
-    requireLowerCase = confirm("Would you like at least one lowercase letter?");
+
+     
+    for (var i = 0; i < 4; i++) {
+        requiredBooleans[i] = confirm("Would you like at least one " + requireQuestions[i] + "?");
+    }
     
-    while (!(requireSpecCharacter || requireNumber || requireLowerCase || requireUpperCase)) {
+    while (!(requiredBooleans[0] || requiredBooleans[1] || requiredBooleans[2] || requiredBooleans[3])) {
         choice = prompt("You must choose at least one of the following:\n1: A special character\n2: A number\n3: An uppercase letter, or\n4: a lowercase letter.\nPlease enter the corresponding number.");
  /* check input - must be 1, 2, 3 or 4.  If not, re-prompt */
  /* re-prompt if choice entered is not a number */
@@ -119,128 +120,139 @@ function getRequirements() {
             alert("You entered " + choice + ", which is greater than 4.\nPlease enter a number between 1 and 4 on the next prompt.");
         }
 
- /* if choice entered is 1, at least one special character is required */   
-        else if (choice == 1) {
-            requireSpecCharacter = true;
-        }
-
- /* if choice entered is 2, at least one number is required */   
-        else if (choice == 2) {
-            requireNumber = true;
-        }
-
- /* if choice entered is 3, at least one lower case letter is required */   
-        else if (choice == 3) {
-            requireLowerCase = true;
-        }
-
- /* if choice entered is 4, at least one upper case letter is required */          
-        else if (choice == 4) {
-            requireUpperCase = true;
-        }
-
-/* all options should've already been covered.  This should never be executed. */
+ /* choice is valid; change corresponding character type to true (required) */   
         else {
-            console.log("Shouldn't get here.  Choice = " + choice);
+            requiredBooleans[choice] = true;
         }
-    }   /* of while loop */
-    // alert("Exitted while loop.");
-    // alert("Choice: " + choice + "\nrequireSpecCharacter:" + requireSpecCharacter + "\nrequireNumber:" + requireNumber + "\nrequireLowerCase: " + requireLowerCase + "\nrequireUpperCase: " + requireUpperCase);
+    } /* of while loop */
+
 }  /* end of function getRequirements  */
 
 
 /* randomly generate the number of each type of character, including at least one of each type requested. */
 function getNumberOfEachType() {
     var lengthLeft = pwLength;   /*  lengthLeft keeps track of how many characters are left to distribute among remaining types */
-    var numTypes = requireSpecCharacter + requireNumber + requireUpperCase + requireLowerCase; /* used to leave at least one character for all required types */
+    /* numTypes used to leave at least one character for all required types */
+    var numTypes = 0;
+    for (var i = 0; i < 4; i++) {
+        numTypes = numTypes + requiredBooleans[i];
+    }
+    
 
-    /* Generate the number of special characters first */
-    if (requireSpecCharacter) {
-        numTypes--;   /* used to leave at least one character for each of the remaining required types of characters */
-        if (numTypes == 0) {  /* if this is the last type left, all the remaining types need to be Special characters */
-            numSpecCharacters = lengthLeft;
-            lengthLeft = 0;
-        }  /* of if */
-        else {      /* generate a number between 1 and the max number of Spec Characters needed */
-            numSpecCharacters = Math.floor(Math.random() * (lengthLeft - numTypes)) + 1;
-            lengthLeft = lengthLeft - numSpecCharacters;  /* lengthLeft is the number of characters of other types remaining */
-        }  /* of else */
-    }  /* of if requireSpecCharacter */
+    /* Generate the number of each character type */
+    for (var i = 0; i < 4; i++) {  
+
+
+        if (requiredBooleans[i]) {
+            numTypes--;   /* used to leave at least one character for each of the remaining required types of characters */
+            if (numTypes == 0) {  /* if this is the last type left, all the remaining types need to be the current type */
+                numEachCharType[i] = lengthLeft;
+                lengthLeft = 0;
+            }  /* of if */
+            else {      /* generate a number between 1 and the max number of Spec Characters needed */
+                numEachCharType[i] = Math.floor(Math.random() * (lengthLeft - numTypes)) + 1;
+                lengthLeft = lengthLeft - numEachCharType[i];  /* lengthLeft is the number of characters of other types remaining */
+            }  /* of else */
+        }  /* of if requireSpecCharacter */
     
-    /* Generate the number of numbers that will be used */
-    if (requireNumber) {
-        numTypes--;  /* used to leave at least one character for each of the remaining required types of characters */
-        if (numTypes == 0) {    /* if this is the last type left, all the remaining types need to be numbers */
-            numNumbers = lengthLeft;
-            lengthLeft = 0;
-        }  /* of if */
-        else {     /* generate a number between 1 and the max number of numbers needed */
-            numNumbers = Math.floor(Math.random() * (lengthLeft - numTypes)) + 1;
-            lengthLeft = lengthLeft - numNumbers;  /* lengthLeft is the number of characters of other types remaining */
-        }  /* of else */
-    }  /* of if numbers required */
+    } /* of for loop */
     
-    /* Generate the number of upper case characters */
-    if (requireUpperCase) {
-        numTypes--;   /* used to leave at least one character for each of the remaining required types of characters */
-        if (numTypes == 0) {  /* if this is the last type left, all the remaining types need to be upper case */
-            numUpperCase = lengthLeft;
-            lengthLeft = 0;
-        }  /* of if */
-        else {   /* generate a number between 1 and the max number of upper case characters needed */
-            numUpperCase = Math.floor(Math.random() * (lengthLeft - numTypes)) + 1;
-            lengthLeft = lengthLeft - numUpperCase;  /* lengthLeft is the number of characters of other types remaining */
-        }  /* of else */
-    }  /* of if upper case characters required */
-    
-    /* any remaining characters will be lower case */
-    numLowerCase = lengthLeft;
-    lengthLeft = 0;
+}  /* of getNumberOfEachType function */
+
+
+
+function generateIndices() {
+
+}
+
+/* needs to be revised!!!  */
+function assignPW() {
+    var char;
+    var type;
+    var index;
+    var pw = " ";
+   
+
+console.log(" ");    
+console.log(" ");    
+console.log(" ");    
+console.log("begin assigning PW.  Char & Type: " + char + type);
+    for (var i = 0; i < pwLength; i++) {
+console.log(" ");    
+        console.log("i: " + i);
+        type = Math.floor(Math.random() * 4);
+
+        if (type == 0 && numSpecCharacters > 0) {
+            index = Math.floor(Math.random() * specCharacters.length);
+            char = specCharacters[index];
+            numSpecCharacters--;
+            pw = pw + char;
+        }
+
+        else if (type == 1 && numNumbers > 0) {
+            index = Math.floor(Math.random() * numbers.length);
+            char = numbers[index];
+            numNumbers--;
+            pw = pw + char;
+        }
+
+        else if (type == 2 && numUpperCase > 0) {
+            index = Math.floor(Math.random() * upperCase.length);
+            char = upperCase[index];
+            numUpperCase--;
+            pw = pw + char;
+        }
+
+        else if (type == 3 && numLowerCase > 0) {
+            index = Math.floor(Math.random() * lowerCase.length);
+            char = lowerCase[index];
+            numLowerCase--;
+            pw = pw + char;
+        }
+        else {
+            i--;
+        }
+
+
+
+    }
+    return pw;
     
 }
 
-function addCharToPw(potentialChars, numCharsRequested) {
-    var charLeft = numCharsRequested;  /* to keep track of now many characters are still needed */
-    
-    
-}
-
-    var specCharacters = ["!", "#", "$", "%", "&", "(", ")", "*", "+", "-", "/", ":", ";", "<", "=", ">", "?", "@", "^", "_", "`", "{", "|", "}", "~"];
-    var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    var upperCase = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    var lowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var possibleCharacters = [
+        ["!", "#", "$", "%", "&", "(", ")", "*", "+", "-", "/", ":", ";", "<", "=", ">", "?", "@", "^", "_", "`", "{", "|", "}", "~"], /* spec chars */
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], /* numbers */
+        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"], /* uppercase */
+        ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] /* lowercase */
+       ] 
 
     var pwLength = getLength();  /* ask & verify length of password desired */
-    var requireSpecCharacter = false;
-    var requireNumber = false;
-    var requireUpperCase = false;
-    var requireLowerCase = false;
+    var requiredBooleans = [false, false, false, false]; /* SpecChar, #s, UpperCase, LowerCase */
+    var requireQuestions = ["special character", "number", "uppercase letter", "lowercase letter"];
+    
     getRequirements();
 
-    var numSpecCharacters = 0;
-    var numNumbers = 0;
-    var numUpperCase = 0;
-    var numLowerCase = 0;
+    var numEachCharType = [0, 0, 0, 0];
+    var indiciesForEachCharType = [ [], [], [], []];
 
     getNumberOfEachType();
+
+    for (var i = 0; i < 4; i++) {
+        console.log(requireQuestions[i] + ": " + numEachCharType[i]);
+    }
+
     var password = null;
     var pwCharLeft = pwLength;
-    alert("Length: " + pwLength + "\nSpec Char: " + numSpecCharacters + "\nnumbers: " + numNumbers + "\nUC: " + numUpperCase + "\nlc: " + numLowerCase);
+    alert("Length: " + pwLength + "\nSpec Char: " + numEachCharType[0] + "\nnumbers: " + numEachCharType[1] + "\nUC: " + numEachCharType[2] + "\nlc: " + numEachCharType[3]);
 
-/*
-    if (requireSpecCharacter, char) {
-            addCharToPw(specCharacters);
+    for (var i = 0; i < 4; i++) {
+        generateIndices();
     }
-    if (requireNumber) {
-            addCharToPw(numbers);
-    }
-    if (requireUpperCase) {
-        addCharToPw(upperCase);
-    }
-    if (requireLowerCase) {
-        addCharToPw(lowerCase);
-    }
-    */
+
+    /* password = assignPW(); */
+    alert("Complete Password: " + password);
+
 
 
 </script>
