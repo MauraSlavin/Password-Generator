@@ -112,11 +112,11 @@ function getRequirements() {
     var choice = null;
  
     for (var i = 0; i < numCharTypes; i++) {
-        requiredBooleans[i] = confirm("Would you like at least one " + requireQuestions[i] + "?");
+        requiredBooleans[i] = confirm("Would you like at least one " + requireQuestions[i] + "?\n(OK for yes; CANCEL for no.)");
     }
 
     while (!(requiredBooleans[0] || requiredBooleans[1] || requiredBooleans[2] || requiredBooleans[3])) {
-        choice = prompt("You must choose at least one of the following:\n1: A special character\n2: A number\n3: An uppercase letter, or\n4: a lowercase letter.\nPlease enter the corresponding number.");
+        choice = prompt("You must choose at least one of the following:\n1: A special character\n2: A number\n3: An uppercase letter, or\n4: a lowercase letter.\nPlease enter the corresponding number between 1 and 4.");
 /* check input - must be 1, 2, 3 or 4.  If not, re-prompt */
 /* re-prompt if choice entered is not a number */
         if (isNaN(choice)) {
