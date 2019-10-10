@@ -10,7 +10,7 @@ var possibleCharacters = [
    ] 
 
 /* number of character types (for looping through each ). */
-   var numCharTypes = possibleCharacters.length;
+var numCharTypes = possibleCharacters.length;
 
 /* variables needed to ask the user what requirements they want */
 /* length of password  */
@@ -27,33 +27,40 @@ var indiciesForEachCharType = [ [], [], [], []];
 
 /* initialize password to be generated */
 var password = null;
-/* pwCharLeft keeps track of how many characters are left to work with */
-// var pwCharLeft = pwLength;
 
+/* number of character types requested */
+var numTypesReqd = 0;
 
 
 /* executed when "Generate PW" button is clicked */
 /* generates pw */
 
 function getPW() {
+
+
     pwLength = getLength();     /* ask & verify length of password desired */
+
 /* getRequirements changes requiredBooleans */
     getRequirements();          /* ask user which requirements they want, validate input, reprompt if needed */
-    getNumberOfEachType();      /* randomly determine how many of each REQUESTED char type will be generated (0 if not requested as a placeholder) */
 
-/* for testing - how many of each char type will be generated */
+    /* determine the number of char types requested */
+/* numTypesReqd is used to leave at least one character for all required types */
+    numTypesReqd = 0;
     for (var i = 0; i < numCharTypes; i++) {
-        console.log(requireQuestions[i] + ": " + numEachCharType[i]);
+        numTypesReqd = numTypesReqd + requiredBooleans[i];  /* increment by 1 for each requested char type */
     }
 
-/* generate the indicies into password for each char type.  */
-    for (var i = 0; i < numCharTypes; i++) {
-        if (numEachCharType[i]>0) {
-            indiciesForEachCharType[i] =  generateIndices(numEachCharType[i],i);
-        }
-    }   
+    getNumberOfEachType(pwLength);      /* randomly determine how many of each REQUESTED char type will be generated (0 if not requested as a placeholder) */
 
-    alert("(test) indicies generated:  " + indiciesForEachCharType);
+/* generate the indicies into password for each char type.  */
+  //  for (var i = 0; i < numCharTypes; i++) {
+    //    if (numEachCharType[i]>0) {
+      //      indiciesForEachCharType[i] =  generateIndices(numEachCharType[i],i);
+//        }
+  //  }   
+
+    generateIndexes();  /* DELETE generateIndICES if I use this */
+
 
     password = assignPW();
 
@@ -62,6 +69,7 @@ function getPW() {
 /* change formatting */
     securepw.style.color = "blue";
     securepw.style.weight = "700";
+    resetGlobalVariables();  /* or it might mess up the next iteration */
 }  /* of fcn getPW */
 
 
@@ -136,19 +144,15 @@ function getRequirements() {
 
 /* randomly generate the number of each type of character, including at least one of each type requested. */
 
-function getNumberOfEachType() {
-    var lengthLeft = pwLength;   /*  lengthLeft keeps track of how many characters are left to distribute among remaining types */
-    /* numTypes used to leave at least one character for all required types */
-    var numTypes = 0;
-    for (var i = 0; i < numCharTypes; i++) {
-        numTypes = numTypes + requiredBooleans[i];
-    }
+function getNumberOfEachType(lengthLeft) {
 
+    var numTypes = numTypesReqd;
 /* Generate the number of each character type */
     for (var i = 0; i < numCharTypes; i++) {  
 
 
         if (requiredBooleans[i]) {
+
             numTypes--;   /* used to leave at least one character for each of the remaining required types of characters */
             if (numTypes == 0) {  /* if this is the last type left, all the remaining types need to be the current type */
                 numEachCharType[i] = lengthLeft;
@@ -160,7 +164,6 @@ function getNumberOfEachType() {
             }  /* of else */
         }  /* of if requireSpecCharacter */
     } /* of for loop */
-
 }  /* of getNumberOfEachType function */
 
 
@@ -189,6 +192,27 @@ function generateIndices(numIndiciesNeeded, charType) {
 
 
 
+function generateIndexes () {
+    var indexIntoPw = [];
+
+    for (var i = 0; i < pwLength; i++) {
+        indexIntoPw.push(i);
+    } /* of for loop */
+
+    indexIntoPw = shuffle(indexIntoPw);
+
+
+    var index = 0;
+    for (var type = 0; type < numCharTypes; type++) {
+        for (var i = 0; i < numEachCharType[type]; i++) {
+            indiciesForEachCharType[type][i] = indexIntoPw[index];
+            index++;
+        } /* of inner for loop (i) */
+    }   /* of outer for loop  (type) */
+ }/*  of function generateIndexes */
+
+
+
 /* scrambles the order of elements in an array.  Used to mix up where the characters are placed for each char type. */
 
 function shuffle(array) {
@@ -209,14 +233,22 @@ return array;
 /* needs to be revised!!!  */
 
 function assignPW() {
+
+    var strLen = 0;
+    /* create pw array of the appropriate size */
     var pw = [];
+    for (var i = 0; i < pwLength; i++) {
+        pw.push([]);
+    }
 
     /* get characters to be used, by character type */
-    for (var i = 0; i < numCharTypes; i++) {
-        for (var j = 0; j < indiciesForEachCharType[i].length; j++) {
-            pw.push(possibleCharacters[i][j]);
-        }
-    }  /* of assignPW fcn */
+    for (var charType = 0; charType < numCharTypes; charType++) {
+        strLen = possibleCharacters[charType].length;
+            for (var index = 0; index < indiciesForEachCharType[charType].length; index++) {
+                var i = indiciesForEachCharType[charType][index];
+                pw[i] = possibleCharacters[charType][Math.floor(Math.random() * strLen)];
+            }  /* of for index loop */
+    }  /* of for charType loop */
 
     pw = shuffle(pw);
     alert(pw);
@@ -254,3 +286,23 @@ function copyToClipboard() {
         document.body.removeChild(textarea);
     } /* of "finally" */
 }   /* of function copyToClipboard */
+
+function resetGlobalVariables() {
+    /* number of character types (for looping through each ). */
+   numCharTypes = possibleCharacters.length;
+
+   /* variables needed to ask the user what requirements they want */
+   /* length of password  */
+   pwLength = 0;  
+   /* assume none of the character types are required to begin with. */
+   requiredBooleans = [false, false, false, false]; /* SpecChar, #s, UpperCase, LowerCase */
+   
+   /* number of each character type to include in password.  Will be 0 if not wanted.  Sum of elements should = pwLength */
+   numEachCharType = [0, 0, 0, 0];
+   /* indicies into password for each of the character types.  Total number of indicies should = pwLength */
+   indiciesForEachCharType = [ [], [], [], []];
+   
+   /* initialize password to be generated */
+   password = null;
+
+}
