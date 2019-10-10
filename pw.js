@@ -176,7 +176,6 @@ function generateIndices(numIndiciesNeeded, charType) {
 
     for (var i = 0; i < possibleCharacters[charType].length; i++) {
         allIndicies.push(i);
-        // alert(i + " (i):  allIndicies:  " + allIndicies);
     }
 
     allIndicies = shuffle(allIndicies);
@@ -251,11 +250,9 @@ function assignPW() {
     }  /* of for charType loop */
 
     pw = shuffle(pw);
-    alert(pw);
 
     /* make into a string */
     pw = pw.join('');
-    alert(pw);
 
     return pw;
 }   /* of assignPW function */
@@ -303,6 +300,6 @@ function resetGlobalVariables() {
    indiciesForEachCharType = [ [], [], [], []];
    
    /* initialize password to be generated */
-   password = null;
+   /*  password = null;  DON'T RESET OR IT WON'T BE AVAILABLE TO COPY TO THE CLIPBOARD! */
 
 }
