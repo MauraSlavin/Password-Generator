@@ -1,4 +1,6 @@
 # Password-Generator
+https://mauraslavin.github.io/Password-Generator/
+
 Generates a random password, 8-128 characters, with at least one of each of the character types: special character, number, lowercase, uppercase.  User chooses which of the character types will be required.  Any combination that includes at least one type is allowed.
 
 The number of each of the required character types is randomly generated.  For example, if a 16 digit password is requested, requiring only upper and lower case characters, then there will be at least one upper case letter and at least one lower case letter.  The distribution of the remaining characters is randomly generated.
